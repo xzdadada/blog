@@ -1,0 +1,93 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Divider from "../components/ui/Divider.astro";
+const allPosts = await Astro.glob("./posts/*.md");
+const sortedPostList = allPosts.sort((a, b) =>
+    a.frontmatter.pubDate < b.frontmatter.pubDate ? 1 : -1,
+);
+const postList: any[][] = [];
+let index = 0;
+sortedPostList.forEach((item) => {
+    if (!postList[index]) {
+        postList.push([item]);
+    } else {
+        const lastPost = postList[index][0];
+        const lastPostYear = new Date(
+            lastPost.frontmatter.pubDate,
+        ).getFullYear();
+        const nowPostYear = new Date(item.frontmatter.pubDate).getFullYear();
+        if (nowPostYear === lastPostYear) {
+            postList[index].push(item);
+        } else {
+            index++;
+            postList[index] = [item];
+        }
+    }
+});
+const pageTitle = "我的 Astro 学习博客";
+---
+
+<Layout title={pageTitle}>
+    <h1 class="text-4xl mb-4">Blog</h1>
+    <ul class="flex flex-col w-3/4">
+        {
+            postList.map((postGroup, groupIndex) => {
+                return (
+                    <li
+                        class={`relative flex gap-4 animate-fade-up animate-ease-out animate-delay-[${250 * index}ms]`}
+                    >
+                        <div class="text-2xl font-bold py-4 px-2 h-fit border-t-2 border-gray-400 bg-gray-100 font-mono">
+                            {new Date(
+                                postGroup[0].frontmatter.pubDate,
+                            ).getUTCFullYear()}
+                        </div>
+                        <ul class="flex flex-col flex-1">
+                            {postGroup.map((post, index) => (
+                                <>
+                                    <Divider classList="border-2" />
+                                    <li class="flex py-2">
+                                        <img
+                                            class="w-1/3 h-40 shadow-md border-4 border-white"
+                                            alt=""
+                                            src={post.frontmatter.img}
+                                        />
+                                        <div class="flex flex-col justify-between ml-4">
+                                            <a
+                                                class="flex flex-col"
+                                                href={post.url}
+                                            >
+                                                <div class="leading-7 text-md">
+                                                    {post.frontmatter.title}
+                                                </div>
+                                                <span class="text-sm text-gray-300">
+                                                    {new Date(
+                                                        post.frontmatter.pubDate,
+                                                    ).toLocaleDateString()}
+                                                </span>
+                                                <div class="text-md text-gray-500">
+                                                    {
+                                                        post.frontmatter
+                                                            .description
+                                                    }
+                                                </div>
+                                            </a>
+                                            <div class="flex gap-2">
+                                                {post.frontmatter.tags.map(
+                                                    (item) => (
+                                                        <span class="border rounded-md px-2 bg-slate-100">
+                                                            {item}
+                                                        </span>
+                                                    ),
+                                                )}
+                                            </div>
+                                        </div>
+                                    </li>
+                                </>
+                            ))}
+                        </ul>
+                    </li>
+                );
+            })
+        }
+    </ul>
+</Layout>

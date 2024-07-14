@@ -1,0 +1,15 @@
+---
+const { frontmatter } = Astro.props;
+import Layout from "./Layout.astro";
+import "./lapis.css";
+---
+
+<Layout title={frontmatter.title}>
+    <div id="write">
+        <h1>{frontmatter.title}</h1>
+        <p class="text-gray-400 text-center">
+            {frontmatter.pubDate.toString().slice(0, 10)}
+        </p>
+        <slot />
+    </div>
+</Layout>
