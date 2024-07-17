@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Divider from '../components/ui/Divider.astro'
+import moment from 'moment'
 const allPosts = await Astro.glob('./posts/*.md')
 const sortedPostList = allPosts.sort((a, b) =>
   a.frontmatter.pubDate < b.frontmatter.pubDate ? 1 : -1
@@ -22,60 +23,43 @@ sortedPostList.forEach((item) => {
     }
   }
 })
-const pageTitle = '我的 Astro 学习博客'
+const pageTitle = '0h_x0 的 blog'
 ---
 
 <Layout title={pageTitle}>
-  <h1 class='text-5xl my-8 font-mono font-bold'>Blog</h1>
-  <ul class='flex flex-col w-2/3'>
+  <h1 class='text-4xl my-6'>Blog</h1>
+  <ul class='flex flex-col w-full md:w-1/2'>
     {
       postList.map((postGroup, groupIndex) => {
         return (
-          <li
-            class={`relative flex gap-4 animate-fade-up animate-ease-out animate-delay-[${250 * index}ms]`}
-          >
-            <div class='text-2xl font-bold py-4 px-2 h-fit border-t-2 border-gray-500 bg-gray-100 font-mono rounded-b-md'>
-              {new Date(postGroup[0].frontmatter.pubDate).getUTCFullYear()}
-            </div>
-            <ul class='flex flex-col flex-1'>
-              {postGroup.map((post, index) => (
-                <>
-                  <Divider classList='border-2 border-white' />
-                  <li class='flex py-2 relative items-center gap-[10%]'>
-                    <div class='w-1/3 relative aspect-video shadow-md border-4 bg-white rounded-md border-white flex items-center'>
-                      <img
-                        class='object-contain '
-                        alt=''
-                        src={post.frontmatter.img}
-                      />
-                    </div>
-                    <div class='flex flex-col flex-1 h-full justify-between'>
-                      <a class='flex flex-col gap-1' href={post.url}>
-                        <div class='leading-7 text-lg'>
-                          {post.frontmatter.title}
-                        </div>
-                        <span class='text-sm text-gray-400'>
-                          {new Date(
-                            post.frontmatter.pubDate
-                          ).toLocaleDateString()}
-                        </span>
-                        <div class='text-sm text-gray-500'>
-                          {post.frontmatter.description}
-                        </div>
-                      </a>
-                      <div class='flex gap-2'>
-                        {post.frontmatter.tags.map((item) => (
-                          <span class='border rounded-md px-2 text-sm bg-slate-100'>
-                            {item}
+          <>
+            <li
+              class={`relative flex-col gap-4 animate-fade-up animate-ease-out animate-delay-[${250 * index}ms]`}
+            >
+              <div class='text-xl my-4 font-bold py-1 px-4 h-fit w-full sm:w-1/4 border-l-2 border-gray-500 bg-[#282828] text-white font-mono sm:rounded-r-md'>
+                {new Date(postGroup[0].frontmatter.pubDate).getUTCFullYear()}
+              </div>
+              <ul class='flex flex-col flex-1 gap-4'>
+                {postGroup.map((post, index) => (
+                  <>
+                    <li class='flex px-4 relative items-center gap-[10%]'>
+                      <div class='flex flex-col flex-1 h-full justify-between'>
+                        <a class='flex items-end gap-4' href={post.url}>
+                          <div class='leading-7 text-lg'>
+                            {post.frontmatter.title}
+                          </div>
+                          <span class='text-sm text-gray-400'>
+                            {moment(post.frontmatter.pubDate).format('MM-DD')}
                           </span>
-                        ))}
+                        </a>
                       </div>
-                    </div>
-                  </li>
-                </>
-              ))}
-            </ul>
-          </li>
+                    </li>
+                  </>
+                ))}
+              </ul>
+            </li>
+            <Divider classList='my-4' />
+          </>
         )
       })
     }

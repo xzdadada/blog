@@ -1,10 +1,11 @@
 ---
 layout: ../../layouts/MarkdownPostLayout.astro
 title: 'Astro 的 markdown 配置教程'
-pubDate: 2024-07-01
+pubDate: 2024-07-15
 description: '在 Astro 中更好地展示 markdown，支持 mermaid、TOC、代码行数等特性'
-tags: ["Astro"]
+tags: ['Astro']
 ---
+
 ## 使用 TOC
 
 安装依赖
@@ -16,28 +17,28 @@ npm i rehype-slug rehype-toc rehype-autolink-headings rehype-stringify remark-to
 配置 markdown.config.ts
 
 ```ts
-import remarkToc from "remark-toc";
-import rehypeToc from "rehype-toc";
-import remarkMermaid from "remark-mermaidjs";
-import rehypeSlug from "rehype-slug";
+import remarkToc from 'remark-toc'
+import rehypeToc from 'rehype-toc'
+import remarkMermaid from 'remark-mermaidjs'
+import rehypeSlug from 'rehype-slug'
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 export default {
-    remarkPlugins: [[remarkToc, { tight: true, ordered: true }]],
-    rehypePlugins: [
-        rehypeHeadingIds,
-        rehypeSlug,
-        [
-            rehypeToc,
-            {
-                headings: ["h1", "h2", "h3"],
-                cssClasses: {
-                    toc: "toc-post",
-                    link: "toc-link",
-                },
-            },
-        ],
+  remarkPlugins: [[remarkToc, { tight: true, ordered: true }]],
+  rehypePlugins: [
+    rehypeHeadingIds,
+    rehypeSlug,
+    [
+      rehypeToc,
+      {
+        headings: ['h1', 'h2', 'h3'],
+        cssClasses: {
+          toc: 'toc-post',
+          link: 'toc-link',
+        },
+      },
     ],
-};
+  ],
+}
 ```
 
 配置 astro.config.js
@@ -67,21 +68,25 @@ npm i astro-expressive-code
 
 ```js
 export default defineConfig({
-  integrations: [tailwind(), react(), astroExpressiveCode()]
-});
+  integrations: [tailwind(), react(), astroExpressiveCode()],
+})
 ```
 
 自定义配置：在 `astroExpressiveCode` 中进行配置，参考 https://expressive-code.com/reference/style-overrides/
 
 ```js
 export default defineConfig({
-  integrations: [tailwind(), react(), astroExpressiveCode({
-    styleOverrides: {
-      codeBackground: '#f6f8fa',
-      codeFontSize: '1rem'
-    }
-  })]
-});
+  integrations: [
+    tailwind(),
+    react(),
+    astroExpressiveCode({
+      styleOverrides: {
+        codeBackground: '#f6f8fa',
+        codeFontSize: '1rem',
+      },
+    }),
+  ],
+})
 ```
 
 > 为防止与设置的行内 code 样式干扰，可以使用 css :not 选择器，排除 .expressive-code
@@ -105,4 +110,3 @@ export default defineConfig({
   ],
 })
 ```
-
