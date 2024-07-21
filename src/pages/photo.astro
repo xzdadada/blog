@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro'
+const photoList = await Astro.glob('./img/*.{jpg,jpeg,png,gif}')
+---
+
+<Layout title='0h_x0'>
+  <div class='overflow-y-auto flex flex-col w-full items-center'>
+    {
+      photoList.map((photo, index) => (
+        <div class='w-[80%] aspect-[20/9] items-center bg-[#4D372BEF] px-3 flex gap-2'>
+          <div class='flex flex-col w-[6%] justify-around h-full'>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div class='aspect-[2/1] w-full bg-[white] rounded-sm' />
+            ))}
+          </div>
+          <div class='flex-1 aspect-video bg-white rounded-sm relative overflow-hidden my-2'>
+            <img src={photo.default.src} alt='' class='object-contain' />
+          </div>
+          <div class='flex flex-col w-[6%] justify-around h-full'>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div class='aspect-[2/1] w-full bg-[white] rounded-sm' />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</Layout>
